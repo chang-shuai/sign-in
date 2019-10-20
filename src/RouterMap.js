@@ -1,10 +1,9 @@
 import React from 'react';
 import {HashRouter, Route, Switch, withRouter, Redirect} from 'react-router-dom';
 import Home from './Home';
-import List from './List';
 import UnFound from './UnFound';
-import Detail from './Detail';
 import Drag from './Drag';
+import Calen from './Calen';
 
 class RouterMap extends React.Component {
     render() {
@@ -12,11 +11,10 @@ class RouterMap extends React.Component {
         return (
             <HashRouter>
                 <Switch>
+                    <Redirect exact from='/' to='/Drag'/>
                     <Route exact path='/Drag' component={WithRouterDrag} />
                     <Route exact path='/Home' component={Home} />
-                    <Route exact path='/List' component={List} />
-                    <Route path='/Detail/:id' component={Detail} />
-                    <Redirect  from='/*' to='/Drag'/>
+                    <Route exact path='/Calen/:name' component={Calen} />
                     <Route path='*' component={UnFound} />
                 </Switch>
             </HashRouter>    

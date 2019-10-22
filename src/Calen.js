@@ -3,13 +3,13 @@ import React from 'react';
 import './Calen.css'
 import {sessionStore as store} from './storage'
 import moment from 'moment';
+import check from './Check';
 
 class Calen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {}
         this.dateCellRender.bind(this)
-        this.monthCellRender.bind(this)
     }
 
     getListData = (value, name) => {
@@ -27,16 +27,21 @@ class Calen extends React.Component {
       
       listData = listData.filter( (item) => {
         const signDate = moment(item['出勤时间'])
-         if (signDate.date() === value.date() && signDate.month() === value.month()) {
+        if (signDate.date() === value.date() && signDate.month() === value.month()) {
           return true
         } else {
           return false
         }
-        
       })
 
       listData = listData.map( (item) => {
-        return {type: 'success', content: item['出勤时间']}
+        const dateStr = item['出勤时间']
+        if (check(dateStr)) {
+          return {type: 'success', content: dateStr}
+        } else {
+          return {type: 'error', content: dateStr}
+
+        }
       })
 
       return listData || [];
@@ -54,29 +59,14 @@ class Calen extends React.Component {
         </ul>
       );
     }
-    
-    getMonthData = (value) => {
-      if (value.month() === 8) {
-        return 1394;
-      }
-    }
-    
-    monthCellRender = (value) => {
-      const num = this.getMonthData(value);
-      return num ? (
-        <div className="notes-month">
-          <section>{num}</section>
-          <span>Backlog number</span>
-        </div>
-      ) : null;
-    }
+  
 
     render() {
       this.name = this.props.match.params.name;
       return (
           <div>
             <h2>{this.name}</h2>
-            <Calendar dateCellRender={this.dateCellRender} monthCellRender={this.monthCellRender} />
+            <Calendar dateCellRender={this.dateCellRender}  />
           </div>
       )
     }
